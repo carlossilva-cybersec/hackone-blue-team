@@ -23,7 +23,7 @@ Durante a execução será solicitada a definição da senha do usuário `admin`
 Após a instalação e inicialização dos serviços, acesse:
 
 ```
-https://IP_DO_SERVIDOR:9392
+https://IP_DO_SERVIDOR:443
 ```
 
 **Usuário:**
