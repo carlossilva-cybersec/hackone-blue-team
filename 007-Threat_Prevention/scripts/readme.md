@@ -5,7 +5,7 @@ A instalação do OpenVAS é realizada automaticamente através do script `setup
 ### Executando a instalação
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/carlossilva-cybersec/hackone-blue-team/refs/heads/main/007-Threat_Prevention/scripts/setup_openvas.shs | sudo bash
+curl -fsSL https://raw.githubusercontent.com/carlossilva-cybersec/hackone-blue-team/refs/heads/main/007-Threat_Prevention/scripts/setup_openvas.sh | sudo bash
 ```
 
 Durante a execução será solicitada a definição da senha do usuário `admin`.
