@@ -27,14 +27,5 @@ Durante as aulas, você aprenderá a:
 
 ### 1️⃣ Clonar o Repositório
 ```
-git clone https://github.com/carlossilva-cybersec/hackone_pos.git
-cd hackone_pos/network-anomaly-detection-lab
+git clone https://github.com/carlossilva-cybersec/hackone-blue-team.git
 ```
-### 2️⃣ Instalar Dependências
-`pip install -r requirements.txt` 
-
-ou, manualmente: 
-`pip install pandas scikit-learn matplotlib networkx pyvis` 
-
-### 3️⃣ Abrir o Notebook
-`jupyter notebook pipeline_ids_fortigate.ipynb`
