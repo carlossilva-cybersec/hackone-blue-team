@@ -6,7 +6,7 @@ set -euo pipefail
 # Configurações
 # ==========================
 WORKDIR="/opt/greenbone-community-container"
-COMPOSE_URL="https://raw.githubusercontent.com/carlossilva-cybersec/hackone-blue-team/refs/heads/main/Modulo%207%20-%20Threat%20Prevention/scripts/files/compose.yaml"
+COMPOSE_URL="https://raw.githubusercontent.com/carlossilva-cybersec/hackone-blue-team/refs/heads/main/007-Threat_Prevention/scripts/files/compose.yaml"
 
 # ==========================
 # Funções
