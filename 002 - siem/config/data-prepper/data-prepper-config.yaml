@@ -1,0 +1,4 @@
+ssl: false
+
+peer_forwarder:
+  discovery_mode: static
