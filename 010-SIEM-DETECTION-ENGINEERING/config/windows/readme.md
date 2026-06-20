@@ -86,16 +86,31 @@ Verifique se logs dos canais Windows aparecem no stdout sem erros. Use `Ctrl+C` 
 
 ## 6. Criação do Serviço Windows
 
-Registre o Fluent Bit como serviço para inicialização automática:
+Registre o Fluent Bit como serviço para inicialização automática.
+
+### Opção A — New-Service (recomendado no PowerShell)
 
 ```powershell
-sc.exe create fluent-bit `
-    binPath= "\"C:\Program Files\fluent-bit\bin\fluent-bit.exe\" -c \"C:\Program Files\fluent-bit\conf\fluent-bit.conf\"" `
-    start= auto `
-    DisplayName= "Fluent Bit Log Collector"
+New-Service -Name "fluent-bit" `
+    -BinaryPathName '"C:\Program Files\fluent-bit\bin\fluent-bit.exe" -c "C:\Program Files\fluent-bit\conf\fluent-bit.conf"' `
+    -DisplayName "Fluent Bit Log Collector" `
+    -StartupType Automatic
 ```
 
-> **Atenção:** os espaços após `binPath=`, `start=` e `DisplayName=` são obrigatórios na sintaxe do `sc.exe`.
+> O valor de `-BinaryPathName` usa aspas simples `'...'` para que o PowerShell passe os caminhos com espaços literalmente ao SCM.
+
+### Opção B — sc.exe com stop-parsing (`--%`)
+
+```powershell
+sc.exe create fluent-bit --% binPath= "\"C:\Program Files\fluent-bit\bin\fluent-bit.exe\" -c \"C:\Program Files\fluent-bit\conf\fluent-bit.conf\"" start= auto DisplayName= "Fluent Bit Log Collector"
+```
+
+> O token `--%` instrui o PowerShell a parar de processar escapes e passa o restante da linha diretamente ao sc.exe (sintaxe cmd.exe), onde `\"` funciona como aspas literais.
+
+Resultado esperado em ambos os casos:
+```
+[SC] CreateService SUCCESS
+```
 
 ---
 
