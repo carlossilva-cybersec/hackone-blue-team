@@ -1,143 +1,84 @@
-# Fluent Bit — Instalação e Configuração no Windows
+# Fluent Bit — Instalação e Configuração Ubuntu
 
-Coleta de Windows Event Logs (Security, System, Application) com envio para o Data Prepper via HTTP.
+## 1. Adicionar a chave GPG do repositório
 
----
+Adicione a chave GPG oficial do Fluent Bit ao sistema para garantir a autenticidade dos pacotes instalados.
 
-## Pré-requisitos
-
-- Windows 10/Server 2016 ou superior (64 bits)
-- PowerShell executado como **Administrador**
-- Acesso ao Data Prepper em `192.168.15.200:2021`
-
----
-
-## 1. Download do Binário
-
-Baixe o instalador da versão 5.0.7:
-
-```
-https://packages.fluentbit.io/windows/fluent-bit-5.0.7-win64.exe
+```bash
+sudo sh -c 'curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor > /usr/share/keyrings/fluentbit-keyring.gpg'
 ```
 
 ---
 
-## 2. Instalação
+## 2. Identificar a versão do Ubuntu
 
-Execute o instalador como Administrador. O padrão instala em:
+Execute o comando abaixo para identificar automaticamente o codinome da sua distribuição Ubuntu:
 
-```
-C:\Program Files\fluent-bit\
-```
-
----
-
-## 3. Criação dos Diretórios de Dados
-
-O Fluent Bit precisa de diretórios para o storage e para os arquivos de banco de dados (controle de offset dos logs).
-
-Abra o PowerShell como **Administrador** e execute:
-
-```powershell
-New-Item -ItemType Directory -Force -Path "C:\fluent-bit\storage"
-New-Item -ItemType Directory -Force -Path "C:\fluent-bit\db"
+```bash
+codename=$(grep -oP '(?<=VERSION_CODENAME=).*' /etc/os-release 2>/dev/null || lsb_release -cs 2>/dev/null)
 ```
 
 ---
 
-## 4. Configuração
+## 3. Adicionar o repositório do Fluent Bit
 
-Substitua o arquivo de configuração padrão pelo arquivo deste repositório.
+Adicione o repositório oficial à lista de fontes do APT:
 
-Copie `fluent-bit.conf` para:
-
-```
-C:\Program Files\fluent-bit\conf\fluent-bit.conf
-```
-
-Via PowerShell (ajuste o caminho de origem conforme necessário):
-
-```powershell
-Copy-Item "fluent-bit.conf" -Destination "C:\Program Files\fluent-bit\conf\fluent-bit.conf" -Force
-```
-
-### O que a configuração faz
-
-| Seção | Detalhe |
-|---|---|
-| **INPUT winlog** | Coleta os canais `Security`, `System` e `Application` |
-| **FILTER modify** | Adiciona `hostname`, `source`, `event_source` e `event_type` a todos os eventos |
-| **OUTPUT stdout** | Imprime logs no console — útil durante implantação (pode remover em produção) |
-| **OUTPUT http** | Envia eventos para o Data Prepper em `192.168.15.200:2021/log/ingest` |
-
----
-
-## 5. Teste Manual (antes de criar o serviço)
-
-Valide a configuração executando o Fluent Bit diretamente no terminal:
-
-```powershell
-& "C:\Program Files\fluent-bit\bin\fluent-bit.exe" -c "C:\Program Files\fluent-bit\conf\fluent-bit.conf"
-```
-
-Verifique se logs dos canais Windows aparecem no stdout sem erros. Use `Ctrl+C` para parar.
-
----
-
-## 6. Criação do Serviço Windows
-
-Registre o Fluent Bit como serviço para inicialização automática.
-
-### Opção A — New-Service (recomendado no PowerShell)
-
-```powershell
-sc.exe create fluent-bit --% binPath= "\"C:\Program Files\fluent-bit\bin\fluent-bit.exe\" -c \"C:\Program Files\fluent-bit\conf\fluent-bit.conf\"" start= auto DisplayName= "Fluent Bit Log Collector"
-```
-
-```
-
----
-## 7. Gerenciamento do Serviço
-
-```powershell
-# Iniciar
-sc.exe start fluent-bit
-
-# Verificar status
-sc.exe query fluent-bit
-
-# Parar
-sc.exe stop fluent-bit
-
-# Remover o serviço (se necessário)
-sc.exe delete fluent-bit
+```bash
+echo "deb [signed-by=/usr/share/keyrings/fluentbit-keyring.gpg] https://packages.fluentbit.io/ubuntu/$codename $codename main" | sudo tee /etc/apt/sources.list.d/fluent-bit.list
 ```
 
 ---
 
-## 8. Verificação
+## 4. Atualizar a lista de pacotes
 
-Confirme que os eventos estão chegando ao Data Prepper:
+Atualize a base de dados dos repositórios:
 
-```powershell
-# Testa conexão com o Data Prepper
-Test-NetConnection -ComputerName "IP DO SIEM" -Port 2021
+```bash
+sudo apt update
 ```
 
 ---
+
+## 5. Instalar o Fluent Bit
+
+Instale o Fluent Bit utilizando o gerenciador de pacotes:
+
+```bash
+sudo apt install fluent-bit -y
+```
+
 ---
 
-## Estrutura de Arquivos
+## 6. Verificar a instalação
 
-```
-C:\Program Files\fluent-bit\
-└── conf\
-    └── fluent-bit.conf    ← arquivo de configuração
+Confirme se o Fluent Bit foi instalado corretamente:
 
-C:\fluent-bit\
-├── storage\               ← buffer de disco do Fluent Bit
-└── db\
-    ├── security.db        ← offset do canal Security
-    ├── system.db          ← offset do canal System
-    └── application.db     ← offset do canal Application
+```bash
+fluent-bit --version
 ```
+
+---
+
+## 7. Iniciar o serviço
+
+Habilite e inicie o serviço:
+
+```bash
+sudo systemctl enable fluent-bit
+sudo systemctl start fluent-bit
+```
+
+Verifique o status:
+
+```bash
+sudo systemctl status fluent-bit
+```
+
+---
+
+
+
+# Referências
+* Documentação Oficial: https://docs.fluentbit.io
+* Site Oficial: https://fluentbit.io
