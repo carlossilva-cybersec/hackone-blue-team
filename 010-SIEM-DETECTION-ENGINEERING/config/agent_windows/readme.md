@@ -91,29 +91,12 @@ Registre o Fluent Bit como serviço para inicialização automática.
 ### Opção A — New-Service (recomendado no PowerShell)
 
 ```powershell
-New-Service -Name "fluent-bit" `
-    -BinaryPathName '"C:\Program Files\fluent-bit\bin\fluent-bit.exe" -c "C:\Program Files\fluent-bit\conf\fluent-bit.conf"' `
-    -DisplayName "Fluent Bit Log Collector" `
-    -StartupType Automatic
-```
-
-> O valor de `-BinaryPathName` usa aspas simples `'...'` para que o PowerShell passe os caminhos com espaços literalmente ao SCM.
-
-### Opção B — sc.exe com stop-parsing (`--%`)
-
-```powershell
 sc.exe create fluent-bit --% binPath= "\"C:\Program Files\fluent-bit\bin\fluent-bit.exe\" -c \"C:\Program Files\fluent-bit\conf\fluent-bit.conf\"" start= auto DisplayName= "Fluent Bit Log Collector"
 ```
 
-> O token `--%` instrui o PowerShell a parar de processar escapes e passa o restante da linha diretamente ao sc.exe (sintaxe cmd.exe), onde `\"` funciona como aspas literais.
-
-Resultado esperado em ambos os casos:
-```
-[SC] CreateService SUCCESS
 ```
 
 ---
-
 ## 7. Gerenciamento do Serviço
 
 ```powershell
@@ -138,20 +121,10 @@ Confirme que os eventos estão chegando ao Data Prepper:
 
 ```powershell
 # Testa conexão com o Data Prepper
-Test-NetConnection -ComputerName 192.168.15.200 -Port 2021
+Test-NetConnection -ComputerName "IP DO SIEM" -Port 2021
 ```
 
 ---
-
-## 9. Troubleshooting
-
-| Sintoma | Verificação |
-|---|---|
-| Serviço não inicia | Execute o teste manual (passo 5) e observe o erro no console |
-| Sem eventos de Security | Verifique se o serviço roda como `SYSTEM` ou conta com direito de leitura no log de Segurança |
-| Diretório `db` não encontrado | Confirme que `C:\fluent-bit\db\` foi criado (passo 3) |
-| Falha no OUTPUT http | Execute `Test-NetConnection` para validar conectividade com o Data Prepper |
-
 ---
 
 ## Estrutura de Arquivos
