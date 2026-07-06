@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Threat Hunting Queries</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: linear-gradient(135deg, #020617, #111827); color: #f8fafc; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .hero, .panel { background: rgba(15, 23, 42, 0.95); border: 1px solid #334155; border-radius: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.25); margin-bottom: 1rem; }
+    .hero { padding: 2rem; }
+    .panel { padding: 1.2rem 1.5rem; }
+    .title { font-size: 2rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .muted { color: #94a3b8; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .stat-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 1rem; }
+    .stat-value { font-size: 1.4rem; font-weight: bold; color: #38bdf8; }
+    .stat-label { color: #94a3b8; font-size: 0.9rem; }
+    form { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.8rem; }
+    input { flex: 1; padding: 0.9rem 1rem; border-radius: 10px; border: 1px solid #475569; background: #020617; color: white; min-width: 280px; }
+    button { padding: 0.9rem 1.2rem; border-radius: 10px; border: none; background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: #082f49; font-weight: bold; cursor: pointer; }
+    .chart { display: flex; align-items: end; gap: 0.6rem; height: 140px; margin-top: 0.8rem; }
+    .bar { flex: 1; min-width: 50px; background: linear-gradient(180deg, #38bdf8, #0f766e); border-radius: 6px 6px 0 0; text-align: center; color: #e2e8f0; font-size: 0.8rem; padding-top: 0.25rem; }
+    .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1rem; }
+    code { background: #1f2937; padding: 0.2rem 0.45rem; border-radius: 4px; }
+    ul { padding-left: 1.2rem; }
+    a { color: #7dd3fc; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="title">Threat Hunting Queries</div>
+      <div class="muted">Painel didático de SIEM para investigação de ameaças com logs em formato XML.</div>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-value">{{ metrics.total_events }}</div>
+          <div class="stat-label">Registros carregados</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ metrics.filtered_events }}</div>
+          <div class="stat-label">Resultados atuais</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ metrics.top_event_type }}</div>
+          <div class="stat-label">Tipo dominante</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <h3>Consulta EQL simplificada</h3>
+        <form method="post">
+          <input id="query" name="query" value="{{ query }}" required>
+          <button type="submit">Executar</button>
+        </form>
+        <p class="muted">Exemplos:</p>
+        <ul>
+          {% for example in examples %}
+          <li><code>{{ example }}</code></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Distribuição dos resultados</h3>
+        {% if metrics.chart %}
+        <div class="chart">
+          {% for item in metrics.chart %}
+          <div class="bar" style="height: {{ (item.value * 100 / metrics.filtered_events) if metrics.filtered_events else 0 }}%;">{{ item.value }}</div>
+          {% endfor %}
+        </div>
+        <div class="muted">Tipos de evento mais frequentes</div>
+        {% else %}
+        <p class="muted">Nenhum dado para exibir ainda.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Como usar</h3>
+      <ul>
+        <li>Use campos como <code>event_id</code>, <code>image</code>, <code>event_type</code>, <code>target_object</code>.</li>
+        <li>Combine condições com <code>and</code> ou <code>or</code>.</li>
+        <li>Use <code>contains</code> para procurar trechos de texto.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
