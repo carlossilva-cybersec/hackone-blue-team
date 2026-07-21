@@ -1,0 +1,11 @@
+11:27:23,258 INF librepo: Librepo version: 1.14.5 with CURL_GLOBAL_ACK_EINTR support (libcurl/7.76.1 OpenSSL/3.0.7 zlib/1.2.11 brotli/1.0.9 libidn2/2.3.0 libpsl/0.21.1 (+libidn2/2.3.0) libssh/0.10.4/openssl/zlib nghttp2/1.43.0)
+11:27:23,279 INF librepo: Librepo version: 1.14.5 with CURL_GLOBAL_ACK_EINTR support (libcurl/7.76.1 OpenSSL/3.0.7 zlib/1.2.11 brotli/1.0.9 libidn2/2.3.0 libpsl/0.21.1 (+libidn2/2.3.0) libssh/0.10.4/openssl/zlib nghttp2/1.43.0)
+11:27:38,450 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/AppStream/repodata/repomd.xml
+11:27:38,453 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/AppStream/repodata/509f82558b69a794749a254fadc56e4aec2ab827ae3df2dfe6179093ff8e8cc4-primary.xml.gz
+11:27:38,454 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/AppStream/repodata/f6fd034dc5d7fcdd1cd5849010c00a297747256d8d088993cafc3fc4c119d578-filelists.xml.gz
+11:27:38,454 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/AppStream/repodata/7d56b70765e8a74d96414f898c4d1d4bb4dbc77d512c1da6bd32f16fd1b45bba-comps-AppStream.x86_64.xml.gz
+11:27:38,622 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/AppStream/repodata/9db22dfc0533112cf3f9c0bef52f5bfa427ed2711ae7abd4ba60be1cdff1bbbe-modules.yaml.gz
+11:27:38,712 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/BaseOS/repodata/repomd.xml
+11:27:38,718 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/BaseOS/repodata/de9a1969cddaceeed7fd44656500f60aaeb1847dee0b099a9663e0ee4cecd173-primary.xml.gz
+11:27:38,720 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/BaseOS/repodata/1a88e4ddab179c5cb7183ef19764906b6cd039b6a1d89b5435d843d06eeb2151-filelists.xml.gz
+11:27:38,721 INF librepo: Downloading: file:///run/install/sources/mount-0000-cdrom/BaseOS/repodata/edfdb3e17fb9146191480c8c75a31408971ae6c669e81d40da1adc31c7749668-comps-BaseOS.x86_64.xml.gz
